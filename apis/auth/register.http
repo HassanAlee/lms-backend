@@ -5,6 +5,6 @@ Content-Type:application/json
     "lastName":"Doe",
     "email":"Doejohn@mail.com",
     "password":"secret",
-    "role":"teacher",
+    "role":"student",
     "profilePicture":"google.com"
 }
