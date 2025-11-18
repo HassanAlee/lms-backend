@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto } from './dtos/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,5 +25,32 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(payload);
     // TODO: send a registration confirmtion email
     return { ...user, data: { ...user.data, access_token } };
+  }
+  async login(loginUserDto: LoginUserDto) {
+    const user = (
+      await this.userService.findUserByEmail(loginUserDto.email)
+    ).toObject();
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
+    }
+    const isPasswordCorrect = await bcrypt.compareSync(
+      loginUserDto.password,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new BadRequestException('Invalid credentials');
+    }
+    const payload = {
+      sub: user._id,
+      username: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+    };
+    const access_token = await this.jwtService.signAsync(payload);
+    delete user.password;
+    return {
+      success: true,
+      message: 'Logged in successfully',
+      data: { ...user, access_token },
+    };
   }
 }

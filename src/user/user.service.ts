@@ -46,4 +46,7 @@ export class UserService {
       );
     }
   }
+  public async findUserByEmail(email: string) {
+    return await this.userModel.findOne({ email });
+  }
 }
