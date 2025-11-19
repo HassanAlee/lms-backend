@@ -1,0 +1,10 @@
+POST http://localhost:3000/course
+Content-Type:application/json
+{
+  "title": "Complete NestJS Course",
+  "description": "A beginner-friendly course covering NestJS fundamentals, modules, providers, and MongoDB integration.",
+  "imageUrl": "https://example.com/course-image.jpg",
+  "createdBy": "67460c35e815d2a33b3a7e8b",
+  "status": "pending",
+  "level": "beginner"
+}
