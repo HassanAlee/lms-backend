@@ -1,4 +1,10 @@
-import { IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { CourseLevel, CourseStatus } from 'constants/course-level.enum';
 import { Types } from 'mongoose';
 
@@ -15,7 +21,7 @@ export class CreateCourseDto {
   @IsString()
   imageUrl: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
   createdBy: Types.ObjectId | string;
 

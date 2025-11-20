@@ -33,7 +33,7 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('Invalid credentials');
     }
-    const isPasswordCorrect = await bcrypt.compareSync(
+    const isPasswordCorrect = bcrypt.compareSync(
       loginUserDto.password,
       user.password,
     );
