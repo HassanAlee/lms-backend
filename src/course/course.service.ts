@@ -9,6 +9,7 @@ export class CourseService {
   constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
   public async create(createCourseDto: CreateCourseDto) {
     try {
+      // todo: get course image as file and save to cloudinary
       const course = await this.courseModel.create(createCourseDto);
       return {
         success: true,

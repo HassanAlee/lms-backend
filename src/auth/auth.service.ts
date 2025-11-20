@@ -23,7 +23,7 @@ export class AuthService {
       email: user.data.email,
     };
     const access_token = await this.jwtService.signAsync(payload);
-    // TODO: send a registration confirmtion email
+    // todo: send a registration confirmtion email
     return { ...user, data: { ...user.data, access_token } };
   }
   async login(loginUserDto: LoginUserDto) {
