@@ -44,6 +44,7 @@ export class AuthService {
       sub: user._id,
       username: `${user.firstName} ${user.lastName}`,
       email: user.email,
+      role: user.role,
     };
     const access_token = await this.jwtService.signAsync(payload);
     delete user.password;
