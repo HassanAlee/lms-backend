@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './course.schema';
 import { Model } from 'mongoose';
@@ -29,6 +29,28 @@ export class CourseService {
         message: error.message || 'Failed to create course',
         data: null,
       };
+    }
+  }
+
+  public async findAll() {
+    try {
+      const courses = await this.courseModel
+        .find({ status: 'draft' })
+        .populate({
+          path: 'createdBy',
+          select: 'firstName lastName _id',
+        });
+
+      return {
+        success: true,
+        message: 'Courses fetched successfully',
+        data: courses,
+      };
+    } catch (error) {
+      throw new HttpException(
+        error.message ?? 'Some went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

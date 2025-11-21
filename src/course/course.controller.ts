@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dtos/create-course.dto';
 import { User } from 'decorators/user.decorator';
 import { RolesGuard } from 'guards/roles.guard';
 import { Roles } from 'decorators/roles.decorator';
 import { UserRole } from 'constants/user-role.enum';
+import { Public } from 'decorators/public.decorator';
 
 @Controller('course')
 export class CourseController {
@@ -20,5 +21,11 @@ export class CourseController {
       ...createCourseDto,
       createdBy: user.sub,
     });
+  }
+
+  @Public()
+  @Get()
+  public findAll() {
+    return this.courseService.findAll();
   }
 }

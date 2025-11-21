@@ -2,6 +2,7 @@ import {
   IsEnum,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -20,6 +21,10 @@ export class CreateCourseDto {
   @IsNotEmpty()
   @IsString()
   imageUrl: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  price: string;
 
   @IsOptional()
   @IsMongoId()

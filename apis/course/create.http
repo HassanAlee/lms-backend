@@ -1,11 +1,22 @@
 POST http://localhost:3000/course
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFlODgzNTBmMWQ2ZWE0MDM4NzQ4NzEiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJEb2Vqb2huQG1haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjM2MDg5MDgsImV4cCI6MTc2MzYxMjUwOH0.0D2SiJixlSDEFkkTR0Oiv7fYG8_a-E-p_XiOPRo5UeI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTJhNjNkNzQ4OGM1MjhhOTgzNGEiLCJ1c2VybmFtZSI6IlBldGVyIERvZSIsImVtYWlsIjoicGV0ZXJAbWFpbC5jb20iLCJyb2xlIjoiaW5zdHJ1Y3RvciIsImlhdCI6MTc2MzY5OTQ2NywiZXhwIjoxNzYzNzAzMDY3fQ.rsVeOEmFfPWNEJMOSVwKO_5PgwYYAffkcisk7zcDkt8
 Content-Type:application/json
 {
-  "title": "Complete NestJS Course",
-  "description": "A beginner-friendly course covering NestJS fundamentals, modules, providers, and MongoDB integration.",
-  "imageUrl": "https://example.com/course-image.jpg",
-  "createdBy": "67460c35e815d2a33b3a7e8b",
+  "title": "Practical Golang: From Basics to Production",
+  "description": "Hands-on Go (Golang) course covering language fundamentals, concurrency (goroutines & channels), building RESTful APIs, testing, and deploying production-ready services.",
+  "imageUrl": "https://example.com/golang-course.jpg",
   "status": "pending",
-  "level": "beginner"
+  "level": "beginner",
+  "price": 150
 }
+
+
+
+
+
+
+
+
+
+
+

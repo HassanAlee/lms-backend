@@ -15,6 +15,9 @@ export class Course {
   @Prop({ required: true })
   imageUrl: string;
 
+  @Prop({ required: true })
+  price: number;
+
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   createdBy: Types.ObjectId;
 
