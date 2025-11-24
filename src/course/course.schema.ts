@@ -25,7 +25,7 @@ export class Course {
   level: CourseLevel;
 
   @Prop({ required: false, enum: CourseStatus, default: CourseStatus.PENDING })
-  status: string;
+  status: CourseStatus;
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);

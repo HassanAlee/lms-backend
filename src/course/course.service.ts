@@ -1,12 +1,19 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './course.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateCourseDto } from './dtos/create-course.dto';
 
 @Injectable()
 export class CourseService {
   constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
+  // create course
   public async create(createCourseDto: CreateCourseDto) {
     try {
       // todo: get course image as file and save to cloudinary
@@ -32,10 +39,11 @@ export class CourseService {
     }
   }
 
+  // find all courses
   public async findAll() {
     try {
       const courses = await this.courseModel
-        .find({ status: 'draft' })
+        .find({ status: 'approved' })
         .populate({
           path: 'createdBy',
           select: 'firstName lastName _id',
@@ -51,6 +59,33 @@ export class CourseService {
         error.message ?? 'Some went wrong',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  // update course approval status
+  public async updateCourseApprovalStatus(courseId: string, status: string) {
+    if (!Types.ObjectId.isValid(courseId)) {
+      throw new BadRequestException('Course id must be a valid mongodb id');
+    }
+    try {
+      let course = await this.courseModel.findById(courseId);
+      if (!course) {
+        throw new BadRequestException('Course not found');
+      }
+      course = await this.courseModel.findByIdAndUpdate(courseId, { status });
+      // todo: send an email to the instructor about course status update
+      return {
+        success: true,
+        message: `Course ${status} successfully`,
+        data: course,
+      };
+    } catch (error) {
+      // If it's a known HTTP error, rethrow
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      // Otherwise handle unknown errors
+      throw new InternalServerErrorException('Something went wrong');
     }
   }
 }
