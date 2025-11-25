@@ -1,0 +1,7 @@
+POST http://localhost:3000/course/enroll-course
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTI4NzNkNzQ4OGM1MjhhOTgzNDgiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJEb2Vqb2huQG1haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjQwODA5OTcsImV4cCI6MTc2NDA4NDU5N30.zSkyEXuOar9T5pL3duUX85CX_Zd2LTX4mGOguIpM6Zk
+Content-Type: application/json
+{
+    "user_id":"691fe2873d7488c528a98348",
+    "course_id":"691fe3133d7488c528a9834f"
+}

@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -14,6 +16,7 @@ import { RolesGuard } from 'guards/roles.guard';
 import { Roles } from 'decorators/roles.decorator';
 import { UserRole } from 'constants/user-role.enum';
 import { Public } from 'decorators/public.decorator';
+import { EnrollCourseDto } from './dtos/enroll-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -51,5 +54,14 @@ export class CourseController {
       param.courseId,
       query.status,
     );
+  }
+
+  // enroll in a course
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.INSTRUCTOR, UserRole.STUDENT)
+  @Post('enroll-course')
+  public enrollCourse(@Body() enrollCourseDto: EnrollCourseDto) {
+    return this.courseService.enrollCourse(enrollCourseDto);
   }
 }

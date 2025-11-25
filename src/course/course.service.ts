@@ -9,10 +9,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './course.schema';
 import { Model, Types } from 'mongoose';
 import { CreateCourseDto } from './dtos/create-course.dto';
+import { EnrollCourseDto } from './dtos/enroll-course.dto';
+import { Enrollment } from './enrollment.schema';
 
 @Injectable()
 export class CourseService {
-  constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
+  constructor(
+    @InjectModel(Course.name) private courseModel: Model<Course>,
+    @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
+  ) {}
   // create course
   public async create(createCourseDto: CreateCourseDto) {
     try {
@@ -85,6 +90,30 @@ export class CourseService {
         throw error;
       }
       // Otherwise handle unknown errors
+      throw new InternalServerErrorException('Something went wrong');
+    }
+  }
+
+  // enroll course
+  public async enrollCourse(enrollCourseDto: EnrollCourseDto) {
+    try {
+      const alreadyEnrolled = await this.enrollmentModel.findOne({
+        course_id: enrollCourseDto.course_id,
+        user_id: enrollCourseDto.user_id,
+      });
+      if (alreadyEnrolled) {
+        throw new BadRequestException('Cannot enroll course twice');
+      }
+      await this.enrollmentModel.create(enrollCourseDto);
+      return {
+        success: true,
+        message: 'Course enrolled successfully',
+        data: null,
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new InternalServerErrorException('Something went wrong');
     }
   }
