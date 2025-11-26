@@ -105,6 +105,7 @@ export class CourseService {
         throw new BadRequestException('Cannot enroll course twice');
       }
       await this.enrollmentModel.create(enrollCourseDto);
+      // todo: send welcome email to student
       return {
         success: true,
         message: 'Course enrolled successfully',
@@ -115,6 +116,34 @@ export class CourseService {
         throw error;
       }
       throw new InternalServerErrorException('Something went wrong');
+    }
+  }
+
+  // enrolled courses
+  public async enrolledCourses({ userId }: { userId: string }) {
+    try {
+      const enrollments = await this.enrollmentModel
+        .find({ user_id: userId })
+        .populate({
+          path: 'course_id',
+          populate: {
+            path: 'createdBy',
+            model: 'User',
+            select: 'firstName lastName _id profilePicture',
+          },
+        });
+
+      const updated = enrollments.map((e) => ({
+        course: e.course_id,
+        _id: e._id,
+      }));
+      return {
+        success: true,
+        message: 'Courses fetched successfully',
+        data: updated,
+      };
+    } catch {
+      throw new InternalServerErrorException('Something wennt wrong');
     }
   }
 }

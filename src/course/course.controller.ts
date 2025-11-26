@@ -64,4 +64,12 @@ export class CourseController {
   public enrollCourse(@Body() enrollCourseDto: EnrollCourseDto) {
     return this.courseService.enrollCourse(enrollCourseDto);
   }
+
+  // see courses enrolled
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.STUDENT, UserRole.INSTRUCTOR)
+  @Get('enrolled-courses')
+  public enrolledCourses(@User() user: { sub: string }) {
+    return this.courseService.enrolledCourses({ userId: user.sub });
+  }
 }
