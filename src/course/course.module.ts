@@ -14,5 +14,6 @@ import { Enrollment, EnrollmentSchema } from './enrollment.schema';
   ],
   controllers: [CourseController],
   providers: [CourseService],
+  exports: [CourseService],
 })
 export class CourseModule {}

@@ -146,4 +146,11 @@ export class CourseService {
       throw new InternalServerErrorException('Something wennt wrong');
     }
   }
+
+  // get course by id
+  public async getCourseById(course_id: Types.ObjectId) {
+    if (!course_id) throw new BadRequestException('Course id must be provided');
+    const course = await this.courseModel.findById(course_id);
+    return course;
+  }
 }
