@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -13,6 +15,7 @@ import { CourseService } from 'src/course/course.service';
 export class RatingService {
   constructor(
     @InjectModel(Rating.name) private ratingModal: Model<Rating>,
+    @Inject(forwardRef(() => CourseService))
     private readonly courseService: CourseService,
   ) {}
   public async rateCourse(ratingDto: RatingDto, userId: Types.ObjectId) {
@@ -48,5 +51,20 @@ export class RatingService {
         error.message ?? 'Something went wrong',
       );
     }
+  }
+  public async getRatingsByCourseId(courseId: Types.ObjectId) {
+    const ratings = await this.ratingModal
+      .find({ course_id: courseId })
+      .populate({
+        path: 'user_id',
+        select: 'firstName lastName profilePicture',
+      })
+      .lean();
+
+    return ratings.map((r) => ({
+      ...r,
+      user: r.user_id,
+      user_id: undefined,
+    }));
   }
 }

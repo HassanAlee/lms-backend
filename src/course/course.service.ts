@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -11,12 +13,15 @@ import { Model, Types } from 'mongoose';
 import { CreateCourseDto } from './dtos/create-course.dto';
 import { EnrollCourseDto } from './dtos/enroll-course.dto';
 import { Enrollment } from './enrollment.schema';
+import { RatingService } from 'src/rating/rating.service';
 
 @Injectable()
 export class CourseService {
   constructor(
     @InjectModel(Course.name) private courseModel: Model<Course>,
     @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
+    @Inject(forwardRef(() => RatingService))
+    private readonly ratingService: RatingService,
   ) {}
   // create course
   public async create(createCourseDto: CreateCourseDto) {
@@ -152,5 +157,33 @@ export class CourseService {
     if (!course_id) throw new BadRequestException('Course id must be provided');
     const course = await this.courseModel.findById(course_id);
     return course;
+  }
+
+  public async getCourseDetails(courseId: Types.ObjectId) {
+    try {
+      if (!Types.ObjectId.isValid(courseId)) {
+        throw new BadRequestException('course id must be a valid mongo id');
+      }
+      const course = await this.courseModel.findById(courseId).populate({
+        path: 'createdBy',
+        select: 'firstName lastName profilePicture',
+      });
+      const enrolments = await this.enrollmentModel.countDocuments({
+        course_id: courseId,
+      });
+      const ratings = await this.ratingService.getRatingsByCourseId(courseId);
+      return {
+        success: true,
+        message: 'Course details fetched successfully!',
+        data: { course, enrolments, ratings },
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        error.message ?? 'Something went wrong',
+      );
+    }
   }
 }

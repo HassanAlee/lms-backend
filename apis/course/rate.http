@@ -1,8 +1,8 @@
 POST http://localhost:3000/rating
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTJhNjNkNzQ4OGM1MjhhOTgzNGEiLCJ1c2VybmFtZSI6IlBldGVyIERvZSIsImVtYWlsIjoicGV0ZXJAbWFpbC5jb20iLCJyb2xlIjoiaW5zdHJ1Y3RvciIsImlhdCI6MTc2NDQ5ODU4NywiZXhwIjoxNzY0NTAyMTg3fQ.dNDEMCa1xYBkPVWlaUgPa33QC_1lypmotDE7DuraL-Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTI4NzNkNzQ4OGM1MjhhOTgzNDgiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJEb2Vqb2huQG1haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjQ2NDkyMjMsImV4cCI6MTc2NDY1MjgyM30.nGNX3pkZELQdp96tzbiIRNxNGIkhP6VEIzM_gHmnV2I
 Content-Type:application/json
 {
-    "course_id":"691fe3e03d7488c528a98353",
-    "stars":"1",
-    "comment":"Best"
+    "course_id":"691fe3133d7488c528a9834f",
+    "stars":"5",
+    "comment":"The best course for someone who wants to start journey in backend development. Highly recommended✨"
 }

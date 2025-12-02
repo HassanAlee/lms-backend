@@ -17,6 +17,7 @@ import { Roles } from 'decorators/roles.decorator';
 import { UserRole } from 'constants/user-role.enum';
 import { Public } from 'decorators/public.decorator';
 import { EnrollCourseDto } from './dtos/enroll-course.dto';
+import { Types } from 'mongoose';
 
 @Controller('course')
 export class CourseController {
@@ -42,6 +43,12 @@ export class CourseController {
     return this.courseService.findAll();
   }
 
+  // find course by id
+  @Public()
+  @Get(':id')
+  public findOne(@Param('id') courseId: Types.ObjectId) {
+    return this.courseService.getCourseDetails(courseId);
+  }
   // approve/reject course
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
