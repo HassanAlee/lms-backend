@@ -1,0 +1,6 @@
+PATCH http://localhost:3000/course/691fe3133d7488c528a9834f
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTJhNjNkNzQ4OGM1MjhhOTgzNGEiLCJ1c2VybmFtZSI6IlBldGVyIERvZSIsImVtYWlsIjoicGV0ZXJAbWFpbC5jb20iLCJyb2xlIjoiaW5zdHJ1Y3RvciIsImlhdCI6MTc2NDczNzAzOCwiZXhwIjoxNzY0NzQwNjM4fQ.Lqhr9B2XqI2824txX8nWSbYQR1rpVkZtCutmLxByvNI
+Content-Type:application/json
+{
+"title":"Complete NestJS Course"
+}

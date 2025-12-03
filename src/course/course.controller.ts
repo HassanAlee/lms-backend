@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -18,6 +19,7 @@ import { UserRole } from 'constants/user-role.enum';
 import { Public } from 'decorators/public.decorator';
 import { EnrollCourseDto } from './dtos/enroll-course.dto';
 import { Types } from 'mongoose';
+import { UpdateCourseDto } from './dtos/update-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -78,5 +80,18 @@ export class CourseController {
   @Get('enrolled-courses')
   public enrolledCourses(@User() user: { sub: string }) {
     return this.courseService.enrolledCourses({ userId: user.sub });
+  }
+
+  // update course details
+  // todo: this should also support image
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.INSTRUCTOR)
+  @Patch(':id')
+  public update(
+    @Param('id') courseId: Types.ObjectId,
+    @Body() updateCourseDto: UpdateCourseDto,
+    @User() user: { sub: Types.ObjectId },
+  ) {
+    return this.courseService.updateCourse(updateCourseDto, courseId, user.sub);
   }
 }

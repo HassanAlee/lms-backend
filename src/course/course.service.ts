@@ -6,6 +6,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './course.schema';
@@ -14,6 +15,7 @@ import { CreateCourseDto } from './dtos/create-course.dto';
 import { EnrollCourseDto } from './dtos/enroll-course.dto';
 import { Enrollment } from './enrollment.schema';
 import { RatingService } from 'src/rating/rating.service';
+import { UpdateCourseDto } from './dtos/update-course.dto';
 
 @Injectable()
 export class CourseService {
@@ -181,6 +183,36 @@ export class CourseService {
       if (error instanceof BadRequestException) {
         throw error;
       }
+      throw new InternalServerErrorException(
+        error.message ?? 'Something went wrong',
+      );
+    }
+  }
+
+  // update course
+  public async updateCourse(
+    updateCourseDto: UpdateCourseDto,
+    courseId: Types.ObjectId,
+    userId: Types.ObjectId,
+  ) {
+    try {
+      const course = await this.courseModel.findById(courseId);
+      if (!course) throw new BadRequestException('Course not found');
+      if (course.createdBy.toString() !== userId.toString()) {
+        throw new UnauthorizedException(
+          'You are not allowed to update this course',
+        );
+      }
+      Object.assign(course, updateCourseDto);
+      await course.save();
+
+      return {
+        success: true,
+        message: 'Course updated',
+        data: course,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException(
         error.message ?? 'Something went wrong',
       );

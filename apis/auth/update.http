@@ -1,0 +1,7 @@
+PATCH http://localhost:3000/user
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTFmZTI4NzNkNzQ4OGM1MjhhOTgzNDgiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJEb2Vqb2huQG1haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjQ3MzUzODksImV4cCI6MTc2NDczODk4OX0.MyFcE6TZxsMKA3CEeLFdyT3eTSsgYRxq5yoCIoPudb0
+Content-Type:application/json
+{
+"firstName":"Hassan",
+"lastName":"Ali"
+}

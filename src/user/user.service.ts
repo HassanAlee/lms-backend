@@ -3,10 +3,12 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { RegisterUserDto } from 'src/auth/dtos/register-user.dto';
+import { UpdateUserDto } from 'src/auth/dtos/update-user.dto';
 import { User } from 'src/auth/user.schema';
 
 @Injectable()
@@ -48,5 +50,25 @@ export class UserService {
   }
   public async findUserByEmail(email: string) {
     return await this.userModel.findOne({ email });
+  }
+  public async update(updateUserDto: UpdateUserDto, userId: Types.ObjectId) {
+    try {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+      Object.assign(user, updateUserDto);
+      await user.save();
+      return {
+        success: true,
+        message: 'User updated successfully',
+        data: user,
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException(
+        error.message ?? 'Something went wrong',
+      );
+    }
   }
 }
